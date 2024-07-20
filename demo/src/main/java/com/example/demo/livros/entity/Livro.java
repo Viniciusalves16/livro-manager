@@ -1,11 +1,18 @@
 package com.example.demo.livros.entity;
 
+
+import com.example.demo.livros.model.RecordLivro;
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @NoArgsConstructor
@@ -21,21 +28,38 @@ public class Livro {
 
     @Column(name = "titulo_livro", length = 50, nullable = false)
     private String titulo;
+    @NotNull
     @Column(name = "isbn_codigo", length = 50, nullable = false)
-    private String ISBN;
+    private String isbn;
     @Column(name = "numero_de_pag", length = 50, nullable = false)
     private long numero_de_paginas;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "livro_autor",
             joinColumns = @JoinColumn(name = "idLivro"),
             inverseJoinColumns = @JoinColumn(name = "idAutor")
     )
     private List<Autor> autores;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST )
     @JoinTable(name = "livro_editora",
             joinColumns = @JoinColumn(name = "idivro"),
             inverseJoinColumns = @JoinColumn(name = "idEditora"))
     private List<Editora> editoras;
+
+
+
+    public Livro(RecordLivro recordLivro) {
+        this.titulo = recordLivro.titulo();
+        this.isbn = recordLivro.isbn();
+        this.numero_de_paginas = recordLivro.quantidade_Paginas();
+
+        this.autores = recordLivro.autores().stream()
+                .map(dtoAutor -> new Autor(dtoAutor.nome_Autor(), dtoAutor.sobrenome_Autor(),dtoAutor.data_Nascimento()))
+                .collect(Collectors.toList());
+        this.editoras = recordLivro.editoras().stream()
+                .map(dtoEditora -> new Editora(dtoEditora.nome_Editora(),dtoEditora.país()))
+                .collect(Collectors.toList());
+
+    }
 }
