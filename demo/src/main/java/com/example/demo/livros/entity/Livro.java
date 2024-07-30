@@ -34,14 +34,14 @@ public class Livro {
     @Column(name = "numero_de_pag", length = 50, nullable = false)
     private long numero_de_paginas;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "livro_autor",
             joinColumns = @JoinColumn(name = "idLivro"),
             inverseJoinColumns = @JoinColumn(name = "idAutor")
     )
     private List<Autor> autores;
 
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST )
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL )
     @JoinTable(name = "livro_editora",
             joinColumns = @JoinColumn(name = "idivro"),
             inverseJoinColumns = @JoinColumn(name = "idEditora"))

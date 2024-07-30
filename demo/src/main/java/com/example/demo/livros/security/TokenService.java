@@ -7,8 +7,9 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
 
+import com.example.demo.livros.entity.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.User;
+
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -38,7 +39,7 @@ public class TokenService {
         }
     }
 
-    // Método que verifica o toekn
+    // Método que verifica o token
     public String getSubject(String tokenJWT) {
         try {
             var algoritmo = Algorithm.HMAC256(secret);
@@ -55,4 +56,6 @@ public class TokenService {
     private Instant dataExpiracao() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
+
+
 }

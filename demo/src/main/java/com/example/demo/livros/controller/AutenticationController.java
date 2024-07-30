@@ -1,18 +1,17 @@
 package com.example.demo.livros.controller;
 
+import com.example.demo.livros.entity.User;
 import com.example.demo.livros.model.AuthenticationData;
 import com.example.demo.livros.security.DadosTokenJWT;
 import com.example.demo.livros.security.TokenService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/login")
@@ -37,5 +36,6 @@ public class AutenticationController {
         var tokenJWt = tokenService.generateToken((User) authentication.getPrincipal());
         return ResponseEntity.ok().body(new DadosTokenJWT(tokenJWt));
     }
+
 
 }
